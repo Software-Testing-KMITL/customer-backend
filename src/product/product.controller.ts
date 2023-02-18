@@ -10,7 +10,7 @@ export class ProductController {
   @ApiOkResponse({
     description: 'Response all products',
     type: Product,
-    isArray: true
+    isArray: true,
   })
   @Get()
   async getAllProducts() {
