@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Burger",
+    "price": 5.99,
+    "amount": 1,
+    "description": "A delicious burger",
+    "category": 1,
+    "picture": "some-picture-here"
+  },
+  {
+    "name": "Water",
+    "price": 5.99,
+    "amount": 1,
+    "description": "A delicious burger",
+    "category": 1,
+    "picture": "some-picture-here"
+  },
+  {
+    "name": "Burger",
+    "price": 5.99,
+    "amount": 1,
+    "description": "A delicious burger",
+    "category": 1,
+    "picture": "some-picture-here"
+  }
+]
