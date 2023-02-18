@@ -21,9 +21,9 @@ import { SeedsModule } from './shared/seeds/seeds.module';
         ? databaseConfig().uri_prod
         : databaseConfig().uri_dev,
     ),
-    ProductModule,
     AuthModule,
     UsersModule,
+    ProductModule,
     SeedsModule,
   ],
   controllers: [AppController],
