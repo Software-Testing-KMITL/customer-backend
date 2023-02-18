@@ -8,6 +8,6 @@ export class ProductController {
 
   @Get()
   async getAllProducts(): Promise<Product[]> {
-    return await this.productService.getAllProducts();
+    return await this.productService.findAll();
   }
 }
