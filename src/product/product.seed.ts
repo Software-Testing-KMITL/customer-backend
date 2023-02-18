@@ -2,7 +2,7 @@ import { Command } from 'nestjs-command';
 
 import { Injectable } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './create-product.dto';
+import { CreateProductDto } from './dtos/create-product.dto';
 
 @Injectable()
 export class ProductSeed {

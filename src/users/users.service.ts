@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt'
-import { User, UserDocument } from './user.schema';
+import { User, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
-import { CreateUserDto } from './create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +29,27 @@ export class UsersService {
       phoneNumber
     }
 
+  }
+
+  async getUserById(userId: string) {
+    const user = await this.userModel.findById(userId)
+
+    if (!user) {
+      throw new NotFoundException('user not found')
+    }
+
+    return user
+  }
+
+  async getUserByUsername(username: string) {
+    const user = await this.userModel.findOne({
+      username
+    })
+
+    if (!user) {
+      throw new NotFoundException('user not found')
+    }
+
+    return user
   }
 }
