@@ -5,13 +5,13 @@ import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
 import { UserDocument } from './schemas/user.schema';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService
   ) {}
 
-  @ApiBearerAuth()
   @UseGuards(JwtAccessGuard)
   @Get('profile')
   async getProfile(@CurrentUser() user: UserDocument) {
