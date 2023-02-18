@@ -20,6 +20,8 @@ import { serverConfig } from './config/server.config';
         ? databaseConfig().uri_prod
         : databaseConfig().uri_dev,
     ),
+
+    ProductModule,
   ],
 
   controllers: [AppController],
