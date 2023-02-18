@@ -1,58 +1,48 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductDocument } from 'src/product/product.schema';
 import { ProductService } from './../src/product/product.service';
-import { Model } from 'mongoose';
+import { ProductController } from './../src/product/product.controller';
+import { MongooseModule, getModelToken } from '@nestjs/mongoose';
+import { ProductSchema } from './../src/product/product.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Product, ProductDocument } from './../src/product/product.schema';
 
+// import { Model } from 'mongoose';
+const mappingModel = {
+  findAll: jest.fn(),
+  findById: jest.fn(),
+  create: jest.fn(),
+};
 describe('ProductService', () => {
   let productService: ProductService;
-  let productModel: Model<ProductDocument>;
+  let productController: ProductController;
+  let model: typeof mappingModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProductService],
+      controllers: [ProductController],
+      providers: [
+        ProductService,
+        {
+          provide: getModelToken('Product'),
+          useValue: mappingModel,
+        },
+      ],
     }).compile();
 
     productService = module.get<ProductService>(ProductService);
+    productController = module.get<ProductController>(ProductController);
+    model = module.get(getModelToken('Product'));
   });
-  //   productService = new ProductService(productModel);
-  // productModel = new Model<ProductDocument>();
+  describe('findById', () => {
+    it('should return a product by Id', async () => {
+      const result = 1;
 
-  describe('findAll', () => {
-    it('should return an array of product', async () => {
-      const result = [
-        {
-          _id: '63f05aa5e65ef13bf7d706f6',
-          name: 'Burger',
-          price: 5.99,
-          amount: 1,
-          description: 'A delicious burger',
-          category: '1',
-          picture: 'some-picture-here',
-        },
-        {
-          _id: '63f05aa5e65ef13bf7d706f7',
-          name: 'Water',
-          price: 5.99,
-          amount: 1,
-          description: 'A delicious burger',
-          category: '1',
-          picture: 'some-picture-here',
-        },
-        {
-          _id: '63f05aa5e65ef13bf7d706f8',
-          name: 'Burger',
-          price: 5.99,
-          amount: 1,
-          description: 'A delicious burger',
-          category: '1',
-          picture: 'some-picture-here',
-        },
-      ];
-      jest
-        .spyOn(productService, 'findAll')
-        .mockImplementation(async () => result);
+      console.log(await productService.findById('63f05aa5e65ef13bf7d706f6'));
+      console.log(result);
 
-      expect(await productService.findAll()).toBe(result);
+      expect(
+        (await productService.findById('63f05aa5e65ef13bf7d706f6')).amount,
+      ).toBe(result);
     });
   });
 });
