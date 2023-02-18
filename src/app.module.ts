@@ -6,6 +6,7 @@ import { ProductModule } from './product/product.module';
 
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    ProductModule,
   ],
 
   controllers: [AppController],

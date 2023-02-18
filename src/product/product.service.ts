@@ -14,6 +14,10 @@ export class ProductService {
     return this.productModel.find().exec();
   }
 
+  async findById(id: string): Promise<Product> {
+    return this.productModel.findById(id).exec();
+  }
+
   async create(product: CreateProductDto) {
     const newProduct = new this.productModel({
       ...product,
