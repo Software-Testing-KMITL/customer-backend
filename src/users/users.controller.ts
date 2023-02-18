@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import JwtAccessGuard from 'src/shared/guards/jwt-access.guard';
 import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
-import { UserDocument } from './user.schema';
+import { UserDocument } from './schemas/user.schema';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
