@@ -49,10 +49,10 @@ describe('ProductService', () => {
         },
       ];
       jest
-        .spyOn(productService, 'getAllProducts')
+        .spyOn(productService, 'findAll')
         .mockImplementation(async () => result);
 
-      expect(await productService.getAllProducts()).toBe(result);
+      expect(await productService.findAll()).toBe(result);
     });
   });
 });
