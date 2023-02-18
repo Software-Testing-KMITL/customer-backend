@@ -13,15 +13,26 @@ export class ProductController {
     isArray: true
   })
   @Get()
-  async getAllProducts(): Promise<Product[]> {
-    return await this.productService.findAll();
+  async getAllProducts() {
+    const products = await this.productService.findAll();
+    return {
+      status: {
+        code: 200,
+        message: 'get products successfully',
+      },
+      products: [products],
+    };
   }
 
   @Get(':productId')
-  async getProductById(
-    @Param('productId') productId: string,
-  ): Promise<Product> {
-    console.log(productId);
-    return await this.productService.findById(productId);
+  async getProductById(@Param('productId') productId: string) {
+    const product = await this.productService.findById(productId);
+    return {
+      status: {
+        code: 200,
+        message: 'get specific product successfully',
+      },
+      product,
+    };
   }
 }
