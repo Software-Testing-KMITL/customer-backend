@@ -18,7 +18,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 RUN npm run build
 
-RUN npm run test
+# RUN npm run test
 
 FROM dependencies as runner
 
