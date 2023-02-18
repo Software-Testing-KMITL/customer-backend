@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { databaseConfig } from './config/database.config';
 import { serverConfig } from './config/server.config';
+import { SeedsModule } from './shared/seeds/seeds.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { serverConfig } from './config/server.config';
       load: [databaseConfig, serverConfig],
     }),
     MongooseModule.forRoot(serverConfig().status === 'prod' ? databaseConfig().uri_prod : databaseConfig().uri_dev),
-    AuthModule, UsersModule
+    AuthModule, UsersModule, SeedsModule
   ],
   controllers: [AppController],
   providers: [AppService],
