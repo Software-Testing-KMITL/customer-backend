@@ -6,12 +6,12 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    // private readonly usersService: UsersService,
+    // private readonly jwtService: JwtService,
+    // private readonly configService: ConfigService
   ) {
   }
 
-  async login(loginDto)
+  // async login(loginDto)
 
 }
