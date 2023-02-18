@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from './product.schema';
+import { Product } from './schemas/product.schema';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('products')
