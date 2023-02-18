@@ -4,7 +4,6 @@ import { Product } from './product.schema';
 
 @Controller('products')
 export class ProductController {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(private readonly productService: ProductService) {}
 
   @Get()
