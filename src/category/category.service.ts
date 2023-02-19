@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Category, CategoryDocument } from './category.schema';
-import { CreateCategoryDto } from './category.dto';
+import { Category, CategoryDocument } from './schemas/category.schema';
+import { CreateCategoryDto } from './dtos/category.dto';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly categoryModel: Model<CategoryDocument>) {}
+  constructor(
+    @InjectModel(Category.name)
+    private categoryModel: Model<CategoryDocument>,
+  ) {}
 
-  //TODO: add api docs
   async findAll(): Promise<Category[]> {
     return this.categoryModel.find().exec();
   }
 
   async create(category: CreateCategoryDto) {
-    const newCategory = new this.categoryModel(category);
+    const newCategory = new this.categoryModel({ ...category });
     await newCategory.save();
-    return newCategory;
+    return { newCategory };
   }
 }

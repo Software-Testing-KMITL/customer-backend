@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { Category } from './category.schema';
+import { Category } from './schemas/category.schema';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('category')
