@@ -14,17 +14,22 @@ export class ProductService {
 
   async findAll() {
     // populate category field with name and exclude _id
-    const products: Product[] = await this.productModel.find().populate('category', 'name -_id');
+    const products: (Product & { _id: string })[] = await this.productModel.find().populate('category', 'name -_id');
     return products.map((product) => {
       return {
-        ...product,
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        amount: product.amount,
+        description: product.description,
         category: product.category.map((category) => category.name),
+        picture: product.picture,
       };
     });
   }
 
   async findById(id: string): Promise<Product> {
-    const product: Product = await this.productModel.findById(id)).populate('category', 'name -_id');
+    return await this.productModel.findById(id);
   }
 
   async create(product: CreateProductDto) {
