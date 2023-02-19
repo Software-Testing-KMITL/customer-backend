@@ -5,8 +5,8 @@ import { createMock, DeepMocked } from '@golevelup/ts-jest'
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt'
 import { User, UserDocument } from 'src/users/schemas/user.schema';
-import { getModelToken } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 jest.mock('bcrypt')
 
@@ -30,9 +30,12 @@ describe('AuthService', () => {
       ],
     }).compile();
 
-    authService = module.get<AuthService>(AuthService);
+    authService = module.get(AuthService);
     usersService = module.get(UsersService);
     jwtService = module.get(JwtService);
+
+    // pre-configuration
+    jwtService.sign.mockReturnValue('test');
   });
 
   it('should be defined', () => {
@@ -40,27 +43,25 @@ describe('AuthService', () => {
   });
 
   describe('POST /login', () => {
+    const username = 'User'
+    const password = '1234'
+    const hashedPassword = '1234'
+    const phoneNumber = '0878173728'
+    const userInDB: Partial<UserDocument> = {
+      _id: new mongoose.Types.ObjectId(),
+      username,
+      hashedPassword,
+      phoneNumber
+    }
+
 
     it('should return profile and access token when username and password is valid', async () => {
       // Given
-      jwtService.sign.mockReturnValueOnce('test')
-
-      const username = 'User'
-      const hashedPassword = '1234'
-      const phoneNumber = '0878173728'
-    
-      const user: Partial<UserDocument> = {
-        _id: new mongoose.Types.ObjectId(),
-        username,
-        hashedPassword,
-        phoneNumber
-      }
-
-      usersService.getUserByUsername.mockResolvedValueOnce(user as UserDocument)
+      usersService.getUserByUsername.mockResolvedValueOnce(userInDB as UserDocument)
 
       const loginDto = {
         username,
-        password: hashedPassword
+        password
       }
 
       // When
@@ -73,6 +74,60 @@ describe('AuthService', () => {
       expect(actual.profile.phoneNumber).toEqual(phoneNumber)
     
     });
+
+    it('should throw not found exception when username is invalid and password is valid', async () => {
+      // Given
+      usersService.getUserByUsername.mockImplementationOnce((username: never) => {
+        throw new NotFoundException
+      });
+
+      const loginDto = {
+        username: 'wrong username',
+        password
+      }
+
+      // When
+      const login = async () => await authService.login(loginDto)
+      // Then
+      await expect(login).rejects.toThrowError(NotFoundException)
+
+    })
+
+    it('should throw conflict exception when username is valid and password is invalid', async () => {
+      // Given
+      usersService.getUserByUsername.mockResolvedValueOnce(userInDB as UserDocument)
+
+      const loginDto = {
+        username,
+        password: 'wrong password'
+      }
+
+      // When
+      const login = async () => await authService.login(loginDto)
+
+      // Then
+      await expect(login).rejects.toThrowError(ConflictException)
+
+    })
+
+    it('should throw not found exception when username is invalid and password is invalid', async () => {
+      // Given
+      usersService.getUserByUsername.mockImplementationOnce((username: never) => {
+        throw new NotFoundException
+      });
+
+      const loginDto = {
+        username: 'wrong username',
+        password: 'wrong password'
+      }
+
+      // When
+      const login = async () => await authService.login(loginDto)
+
+      // Then
+      await expect(login).rejects.toThrowError(NotFoundException)
+
+    })
 
   }) 
 });
