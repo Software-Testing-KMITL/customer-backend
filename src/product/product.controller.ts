@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { ResponseProductsProfileDto, ResponseProductProfileDto } from './dtos/product-response.dto';
-import JwtAccessGuard from 'src/shared/guards/jwt-access.guard';
+import JwtAccessGuard from '../shared/guards/jwt-access.guard';
+import { ProductQuery } from './dtos/product-query.dto';
 
+@ApiBearerAuth()
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -14,27 +16,39 @@ export class ProductController {
     type: ResponseProductsProfileDto,
   })
   @Get()
-  async getAllProducts(@Query() query: { page: number; perPage: number }) {
+  async getAllProducts(@Query(new ValidationPipe({ transform: true })) query: ProductQuery) {
     const products = await this.productService.findAll();
-    console.log(products[0]);
-    const { page, perPage } = query;
+    const { page, perPage, category } = query;
+    console.log(query);
 
-    // check if page and perPage are provided
-    if (page && perPage) {
-      // check if there are enough products to display
-      if ((page - 1) * perPage >= products.length) {
-        //TODO: this response status code is still 200 but we can talk more about this
-        return { status: { code: 404, message: 'no product to display' } };
-      } else {
-        // return products based on page and perPage
-        return {
-          status: {
-            code: 200,
-            message: 'get products successfully',
-          },
-          products: products.slice((page - 1) * perPage, page * perPage),
-        };
+    if (category) {
+      // check if page and perPage are provided
+      const products = await this.productService.findByCategory(category);
+      if (page && perPage) {
+        // check if there are enough products to display
+        if ((page - 1) * perPage >= products.length) {
+          //TODO: this response status code is still 200 but we can talk more about this
+          return { status: { code: 404, message: 'no product to display' } };
+        } else {
+          // return products based on page and perPage
+          return {
+            status: {
+              code: 200,
+              message: 'get products successfully',
+            },
+            products: products.slice((page - 1) * perPage, page * perPage),
+          };
+        }
       }
+
+      // filter products based on category
+      return {
+        status: {
+          code: 200,
+          message: 'get products successfully',
+        },
+        products: [products],
+      };
     }
     return {
       status: {
