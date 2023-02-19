@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../auth.service';
+import { UsersService } from '../../users/users.service';
 import { createMock, DeepMocked } from '@golevelup/ts-jest'
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt'
@@ -42,7 +42,7 @@ describe('AuthService', () => {
     expect(authService).toBeDefined();
   });
 
-  describe('POST /login', () => {
+  describe('login', () => {
     const username = 'User'
     const password = '1234'
     const hashedPassword = '1234'
@@ -55,7 +55,7 @@ describe('AuthService', () => {
     }
 
 
-    it('should return profile and access token when username and password is valid', async () => {
+    it('should return profile and access token when username and password are valid', async () => {
       // Given
       usersService.getUserByUsername.mockResolvedValueOnce(userInDB as UserDocument)
 
