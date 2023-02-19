@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from './product.schema';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { ResponseProductsProfileDto, ResponseProductProfileDto } from './dtos/product-response.dto';
 
 @Controller('products')
 export class ProductController {
@@ -9,8 +9,7 @@ export class ProductController {
 
   @ApiOkResponse({
     description: 'Response all products',
-    type: Product,
-    isArray: true,
+    type: ResponseProductsProfileDto,
   })
   @Get()
   async getAllProducts(@Query() query: { page: number; perPage: number }) {
@@ -31,6 +30,10 @@ export class ProductController {
     };
   }
 
+  @ApiOkResponse({
+    description: 'Response all products',
+    type: ResponseProductProfileDto,
+  })
   @Get(':productId')
   async getProductById(@Param('productId') productId: string) {
     const product = await this.productService.findById(productId);
