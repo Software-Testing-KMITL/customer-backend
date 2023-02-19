@@ -54,7 +54,30 @@ describe('ProductService', () => {
 
       const actual = await productService.findAll();
 
-      expect(actual).toBe(mockProducts);
+      expect(actual).toEqual(mockProducts);
     });
   });
+
+  describe('findById', () => {
+    it('should return product of the given id', async () => {
+      // Given
+      const mockProduct = {
+        id: '1',
+        name: 'Product 1',
+        description: 'Description 1',
+        price: 100,
+        amount: 10,
+        picture: 'image1.jpg',
+      }
+
+      productModel.findById.mockResolvedValueOnce(mockProduct)
+      const id = '1'
+
+      // When
+      const actual = await productService.findById(id)
+
+      // Then
+      expect(actual).toEqual(mockProduct)
+    })
+  })
 });
