@@ -28,8 +28,17 @@ export class ProductService {
     });
   }
 
-  async findById(id: string): Promise<Product> {
-    return await this.productModel.findById(id);
+  async findById(id: string) {
+    const product: Product & { _id: string } = await this.productModel.findById(id).populate('category', 'name -_id');
+    return {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      amount: product.amount,
+      description: product.description,
+      category: product.category.map((category) => category.name),
+      picture: product.picture,
+    };
   }
 
   async create(product: CreateProductDto) {

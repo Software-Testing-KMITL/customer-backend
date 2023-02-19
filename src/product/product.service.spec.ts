@@ -46,7 +46,7 @@ describe('ProductService', () => {
       // Given
       const mockProducts = [
         {
-          id: '1',
+          _id: '1',
           name: 'Product 1',
           category: [
             {
@@ -62,7 +62,7 @@ describe('ProductService', () => {
           picture: 'image1.jpg',
         },
         {
-          id: '2',
+          _id: '2',
           name: 'Product 2',
           category: [
             {
@@ -102,7 +102,7 @@ describe('ProductService', () => {
     it('should return product of the given id', async () => {
       // Given
       const mockProduct = {
-        id: '1',
+        _id: '1',
         name: 'Product 1',
         category: [
           {
@@ -129,7 +129,7 @@ describe('ProductService', () => {
       // Then
       const excepted = {
         ...mockProduct,
-        category: ['Category 1']
+        category: ['Category 1', 'Category 2']
       }
 
       expect(actual).toEqual(excepted)
