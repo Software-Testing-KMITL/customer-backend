@@ -49,7 +49,20 @@ export class ProductService {
       }),
     );
 
-    return await this.productModel.find({ category: { $in: categoryIds } });
+    const products: (Product & { _id: string })[] = await this.productModel
+      .find({ category: { $in: categoryIds } })
+      .populate('category', 'name -_id');
+    return products.map((product) => {
+      return {
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        amount: product.amount,
+        description: product.description,
+        category: product.category.map((category) => category.name),
+        picture: product.picture,
+      };
+    });
   }
 
   async create(product: CreateProductDto) {
