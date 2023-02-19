@@ -9,11 +9,11 @@ export class ProductService {
   constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) {}
 
   async findAll(): Promise<Product[]> {
-    return this.productModel.find().exec();
+    return await this.productModel.find();
   }
 
   async findById(id: string): Promise<Product> {
-    return this.productModel.findById(id).exec();
+    return await this.productModel.findById(id);
   }
 
   async create(product: CreateProductDto) {
