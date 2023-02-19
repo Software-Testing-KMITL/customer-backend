@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Category } from 'src/category/schemas/category.schema';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -23,9 +24,8 @@ export class Product {
   description: string;
 
   @ApiProperty()
-  @Prop()
-  // TODO: change this to -> categoryId from category collection (more properly)
-  category: string;
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Category.name }])
+  category: Category[];
 
   @ApiProperty()
   @Prop()

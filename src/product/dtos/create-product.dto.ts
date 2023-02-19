@@ -20,7 +20,7 @@ export class CreateProductDto {
 
   @IsString()
   @ApiProperty()
-  category: string;
+  category: string[];
 
   @IsString()
   @ApiProperty()
