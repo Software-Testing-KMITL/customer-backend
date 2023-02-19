@@ -16,10 +16,9 @@ export class ProductController {
     type: ResponseProductsProfileDto,
   })
   @Get()
-  async getAllProducts(@Query(new ValidationPipe({ transform: true })) query: ProductQuery) {
+  async getAllProducts(@Query() query: ProductQuery) {
     const products = await this.productService.findAll();
     const { page, perPage, category } = query;
-    console.log(query);
 
     if (category) {
       // check if page and perPage are provided

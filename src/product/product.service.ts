@@ -41,6 +41,17 @@ export class ProductService {
     };
   }
 
+  async findByCategory(category: string[]) {
+    const categoryIds: string[] = await Promise.all(
+      category.map(async (name) => {
+        const cat: Category & { _id: string } = await this.categoryModel.findOne({ name: name });
+        return cat._id;
+      }),
+    );
+
+    return await this.productModel.find({ category: { $in: categoryIds } });
+  }
+
   async create(product: CreateProductDto) {
     const newProduct = new this.productModel({
       ...product,
