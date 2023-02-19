@@ -31,7 +31,7 @@ export class UsersService {
 
   }
 
-  async getUserById(userId: string) {
+  async getUserById(userId: string): Promise<UserDocument> {
     const user = await this.userModel.findById(userId)
 
     if (!user) {
@@ -41,7 +41,7 @@ export class UsersService {
     return user
   }
 
-  async getUserByUsername(username: string) {
+  async getUserByUsername(username: string): Promise<UserDocument> {
     const user = await this.userModel.findOne({
       username
     })
