@@ -3,7 +3,7 @@ import { Product, ProductDocument } from './schemas/product.schema';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { Injectable } from '@nestjs/common';
-import { Category, CategoryDocument } from 'src/category/schemas/category.schema';
+import { Category, CategoryDocument } from '../category/schemas/category.schema';
 
 @Injectable()
 export class ProductService {
@@ -24,7 +24,7 @@ export class ProductService {
   }
 
   async findById(id: string): Promise<Product> {
-    return await this.productModel.findById(id);
+    const product: Product = await this.productModel.findById(id)).populate('category', 'name -_id');
   }
 
   async create(product: CreateProductDto) {
