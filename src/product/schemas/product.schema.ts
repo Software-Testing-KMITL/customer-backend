@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export type ProductDocument = HydratedDocument<Product>;
 
-@Schema()
+@Schema({ collection: 'product' })
 export class Product {
   @ApiProperty()
   @Prop()
