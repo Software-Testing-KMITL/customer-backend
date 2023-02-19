@@ -16,12 +16,14 @@ export class ProductController {
   @Get()
   async getAllProducts(@Query() query: { page: number; perPage: number }) {
     const products = await this.productService.findAll();
+    console.log(products[0]);
     const { page, perPage } = query;
 
     // check if page and perPage are provided
     if (page && perPage) {
       // check if there are enough products to display
-      if ((page - 1) * perPage > products.length) {
+      if ((page - 1) * perPage >= products.length) {
+        //TODO: this response status code is still 200 but we can talk more about this
         return { status: { code: 404, message: 'no product to display' } };
       } else {
         // return products based on page and perPage

@@ -3,13 +3,24 @@ import { Product, ProductDocument } from './schemas/product.schema';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { Injectable } from '@nestjs/common';
+import { Category, CategoryDocument } from 'src/category/schemas/category.schema';
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) {}
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
+  ) {}
 
-  async findAll(): Promise<Product[]> {
-    return await this.productModel.find();
+  async findAll() {
+    // populate category field with name and exclude _id
+    const products: Product[] = await this.productModel.find().populate('category', 'name -_id');
+    return products.map((product) => {
+      return {
+        ...product,
+        category: product.category.map((category) => category.name),
+      };
+    });
   }
 
   async findById(id: string): Promise<Product> {
