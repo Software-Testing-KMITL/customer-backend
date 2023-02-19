@@ -6,9 +6,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-  ) {}
+  constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) {}
 
   async findAll(): Promise<Product[]> {
     return this.productModel.find().exec();

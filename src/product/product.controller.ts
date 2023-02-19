@@ -1,8 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from './schemas/product.schema';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { ResponseProductsProfileDto, ResponseProductProfileDto  } from './dtos/product-response.dto';
+import { ResponseProductsProfileDto, ResponseProductProfileDto } from './dtos/product-response.dto';
 
 @Controller('products')
 export class ProductController {
@@ -23,7 +22,6 @@ export class ProductController {
       products: [products],
     };
   }
-
 
   @ApiOkResponse({
     description: 'Response all products',
