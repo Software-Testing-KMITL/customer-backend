@@ -10,6 +10,15 @@ async function bootstrap() {
     transform: true
   }));
 
+  // cors
+  app.enableCors(
+    {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: 'Content-Type, Accept, Authorization, X-Requested-With, X-HTTP-Method-Override, Origin, X-Access-Token, X-Refresh-Token',
+    }
+  );
+
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('Customer API')
