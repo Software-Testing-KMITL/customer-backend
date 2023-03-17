@@ -53,6 +53,3 @@ $ npm run test:cov
 - [gandastik](https://github.com/gandastik)
 - [Sirisap22](https://github.com/Sirisap22)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
